@@ -68,7 +68,7 @@ const generateAIResponse = async (userMessage) => {
   const res = await axios.post(
     process.env.Groq_Api,
     {
-      model: "mixtral-8x7b-32768",
+      model: process.env.model,
       messages: [
         {
           role: "system",
