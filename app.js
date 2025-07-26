@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const app = express();
 const port = 8080;
@@ -7,8 +10,7 @@ const session = require("./models/session.js");
 const message = require("./models/message.js");
 const message = require("./models/message.js");
 
-
-app.set(express.urlencoded({extended: true}));
+app.set(express.urlencoded({ extended: true }));
 app.set(express.json());
 
 main()
@@ -21,36 +23,33 @@ async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/ecommerce");
 }
 
+app.post("/users", async (req, res) => {
+  let user = new user(req.body);
+  let newUser = await user.save();
 
-app.post("/users", async(req,res)=>{
+  res.send(newUser);
+  console.log(newUser);
+});
 
-    let user = new user(req.body);
-    let newUser =  await user.save();
+app.post("/messages", (req, res) => {
+  let message = new message(req.body);
+  let newMessage = message.save();
 
-    res.send(newUser);
-    console.log(newUser);
-})
+  res.send(newMessage);
+  console.log(newMessage);
+});
 
-app.post("/messages",(req,res)=>{
-    let message = new message(req.body);
-    let newMessage = message.save();
-
-    res.send(newMessage);
-    console.log(newMessage);
-})
-
-app.post("/sessions",(req,res)=>{
-    let session  = new session(req.body);
-    let newSession = session.save();
-    res.send(newSession);
-    console.log(newSession);
-})
+app.post("/sessions", (req, res) => {
+  let session = new session(req.body);
+  let newSession = session.save();
+  res.send(newSession);
+  console.log(newSession);
+});
 
 app.get("/users/:userId/sessions", async (req, res) => {
   const sessions = await Session.find({ userId: req.params.userId });
   res.send(sessions);
 });
-
 
 app.get("/sessions/:sessionId/messages", async (req, res) => {
   const messages = await Message.find({ sessionId: req.params.sessionId }).sort(
@@ -58,10 +57,6 @@ app.get("/sessions/:sessionId/messages", async (req, res) => {
   );
   res.send(messages);
 });
-
-
-
-
 
 
 
