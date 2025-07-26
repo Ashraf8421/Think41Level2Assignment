@@ -18,9 +18,9 @@ def load_csv_to_collection(csv_path, collection_name):
     if records:
         db[collection_name].delete_many({})  # Optional: clear old data
         db[collection_name].insert_many(records)
-        print(f"✅ Inserted {len(records)} records into '{collection_name}' collection.")
+        print(f" Inserted {len(records)} records into '{collection_name}' collection.")
     else:
-        print(f"⚠️ No records found in {csv_path}")
+        print(f" No records found in {csv_path}")
 
 def main():
     for file_name in os.listdir(CSV_FOLDER):
@@ -29,7 +29,7 @@ def main():
             csv_path = os.path.join(CSV_FOLDER, file_name)
             load_csv_to_collection(csv_path, collection_name)
 
-    print("\n🎉 All CSV files have been loaded into MongoDB.")
+    print("\n All CSV files have been loaded into MongoDB.")
 
 if __name__ == "__main__":
     main()
